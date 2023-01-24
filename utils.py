@@ -68,17 +68,17 @@ def load_mnist_trainval():
     print("Training data loaded with {count} images".format(count=len(data)))
 
     # split training/validation data
-    train_data = data[:(len(data)*0.8 + 1), :]
+    train_data = None
     train_label = None
     val_data = None
-    val_label = data[(len(data)*0.8 + 1):, :]
-    #############################################################################
-    # TODO:                                                                     #
-    #    1) Split the entire training set to training data and validation       #
-    #       data. Use 80% of your data for training and 20% of your data for    #
-    #       validation. Note: Don't shuffle here.                               #
+    val_label = None
     #############################################################################
 
+    #############################################################################
+    train_data = data[:int(len(data) * 0.8)]
+    train_label = label[:int(len(data) * 0.8)]
+    val_data = data[int(len(data) * 0.8):]
+    val_label = label[int(len(data) * 0.8):]
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
@@ -114,8 +114,8 @@ def generate_batched_data(data, label, batch_size=32, shuffle=False, seed=None):
         batched_data: (List[np.ndarray]) A list whose elements are batches of images.
         batched_label: (List[np.ndarray]) A list whose elements are batches of labels.
     """
-    batched_data = None
-    batched_label = None
+    batched_data = []
+    batched_label = []
     if seed:
         random.seed(seed)
         np.random.seed(seed)
@@ -127,6 +127,21 @@ def generate_batched_data(data, label, batch_size=32, shuffle=False, seed=None):
     #    It's okay if the size of your last batch is smaller than the required  #
     #    batch size                                                             #
     #############################################################################
+    data_zipped = list(zip(data, label))
+
+    if shuffle:
+        random.shuffle(data_zipped)
+
+    while data_zipped:
+        if len(data_zipped) > batch_size:
+            mini_batch = data_zipped[:batch_size]
+            del data_zipped[:batch_size]
+        else:
+            mini_batch = data_zipped
+            data_zipped = []
+        mini_batch_unzip = [[img for img, lbl in mini_batch], [lbl for img, lbl in mini_batch]]
+        batched_data.append(mini_batch_unzip[0])
+        batched_label.append(mini_batch_unzip[1])
 
     #############################################################################
     #                              END OF YOUR CODE                             #
