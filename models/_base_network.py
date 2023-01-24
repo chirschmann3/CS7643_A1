@@ -49,14 +49,10 @@ class _baseNetwork:
         """
         prob = None
         #############################################################################
-        # TODO:                                                                     #
-        #    1) Calculate softmax scores of input images                            #
         #############################################################################
         apply_exp = lambda x: np.exp(x)
         exp_scores = apply_exp(scores)
-
-        sm_func = lambda x: x / np.sum(x)
-        prob = sm_func(exp_scores)
+        prob = np.array([val / np.sum(val) for val in exp_scores])
         #############################################################################
         #                              END OF YOUR CODE                             #
         #############################################################################
@@ -90,8 +86,6 @@ class _baseNetwork:
         """
         acc = None
         #############################################################################
-        # TODO:                                                                     #
-        #    1) Implement the accuracy function                                     #
         #############################################################################
         pred_cat = np.array([np.argmax(row) for row in x_pred])
         correct_pred = np.count_nonzero((pred_cat - y) == 0)
@@ -163,7 +157,6 @@ class _baseNetwork:
         """
         out = None
         #############################################################################
-        # TODO: Comput the gradient of ReLU activation                              #
         #############################################################################
         relu_deriv_func = lambda x: (x > 0) * 1.0
         out = relu_deriv_func(X)
