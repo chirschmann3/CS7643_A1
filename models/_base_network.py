@@ -22,6 +22,7 @@ prohibited and subject to being investigated as a GT honor code violation.
 
 # Do not use packages that are not in standard distribution of python
 import numpy as np
+import math
 
 
 class _baseNetwork:
@@ -51,7 +52,11 @@ class _baseNetwork:
         # TODO:                                                                     #
         #    1) Calculate softmax scores of input images                            #
         #############################################################################
+        apply_exp = lambda x: np.exp(x)
+        exp_scores = apply_exp(scores)
 
+        sm_func = lambda x: x / np.sum(x)
+        prob = sm_func(exp_scores)
         #############################################################################
         #                              END OF YOUR CODE                             #
         #############################################################################
@@ -70,7 +75,9 @@ class _baseNetwork:
         # TODO:                                                                     #
         #    1) Implement Cross-Entropy Loss                                        #
         #############################################################################
-
+        prob_list = [x_pred[i][y[i]] for i in range(len(y))]
+        logs = [-1 * math.log(j) for j in prob_list]
+        loss = sum(logs) / len(logs)
         #############################################################################
         #                              END OF YOUR CODE                             #
         #############################################################################
