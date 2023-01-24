@@ -72,8 +72,6 @@ class _baseNetwork:
         """
         loss = None
         #############################################################################
-        # TODO:                                                                     #
-        #    1) Implement Cross-Entropy Loss                                        #
         #############################################################################
         prob_list = [x_pred[i][y[i]] for i in range(len(y))]
         logs = [-1 * math.log(j) for j in prob_list]
@@ -95,7 +93,9 @@ class _baseNetwork:
         # TODO:                                                                     #
         #    1) Implement the accuracy function                                     #
         #############################################################################
-
+        pred_cat = np.array([np.argmax(row) for row in x_pred])
+        correct_pred = np.count_nonzero((pred_cat - y) == 0)
+        acc = correct_pred / len(y)
         #############################################################################
         #                              END OF YOUR CODE                             #
         #############################################################################
