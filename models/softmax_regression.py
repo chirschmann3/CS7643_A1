@@ -67,13 +67,12 @@ class SoftmaxRegression(_baseNetwork):
         # Hint:                                                                     #
         #   Store your intermediate outputs before ReLU for backwards               #
         #############################################################################
-        aNN = _baseNetwork(self.input_size, self.num_classes)
 
         Z = np.matmul(X, self.weights['W1'])    # Nx784 * 784xC= NxC
-        A = aNN.ReLU(Z)                         # NxC
-        p = aNN.softmax(A)                      # NxC
-        loss = aNN.cross_entropy_loss(p, y)     # scalar
-        accuracy = aNN.compute_accuracy(p, y)
+        A = _baseNetwork.ReLU(self, Z)                         # NxC
+        p = _baseNetwork.softmax(self, A)                      # NxC
+        loss = _baseNetwork.cross_entropy_loss(self, p, y)     # scalar
+        accuracy = _baseNetwork.compute_accuracy(self, p, y)
         #############################################################################
         #                              END OF YOUR CODE                             #
         #############################################################################
@@ -86,12 +85,15 @@ class SoftmaxRegression(_baseNetwork):
         #        1) Compute gradients of each weight by chain rule                  #
         #        2) Store the gradients in self.gradients                           #
         #############################################################################
-        dloss_da = -1 / X.shape[0] * \
-                   np.array([val / np.sum(val) for val in A])    # NxC
-        dloss_dz = np.matmul(dloss_da, aNN.ReLU_dev(X))          # NxC * NxC = NxC
-        dloss_dw = dloss_dz * self.weights['W1']                 # NxC * 784xC
+        # dloss_da = -1 / X.shape[0] * \
+        #            np.array([val / np.sum(val) for val in A])    # NxC
+        # p - one hot Y
+        p[range(y.shape[0]), y] -= 1
+        dloss_da = 1 / y.shape[0] * p                                            # NxC
+        dloss_dz = np.multiply(dloss_da, _baseNetwork.ReLU_dev(self, Z))         # NxC elemwise NxC = NxC
+        dloss_dw = np.matmul(dloss_dz.transpose(), X)                            # CxN * Nx784 = Cx784
         # TODO: Make so weights aren't static
-        self.gradients['W1'] = dloss_dw                          # Needs to be 784xC
+        self.gradients['W1'] = dloss_dw.transpose()                              # Needs to be 784xC
         #############################################################################
         #                              END OF YOUR CODE                             #
         #############################################################################
