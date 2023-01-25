@@ -61,9 +61,6 @@ class SoftmaxRegression(_baseNetwork):
         gradient = None
         accuracy = None
         #############################################################################
-        # TODO:                                                                     #
-        #    1) Implement the forward process and compute the Cross-Entropy loss    #
-        #    2) Compute the gradient of the loss with respect to the weights        #
         # Hint:                                                                     #
         #   Store your intermediate outputs before ReLU for backwards               #
         #############################################################################
@@ -80,15 +77,9 @@ class SoftmaxRegression(_baseNetwork):
             return loss, accuracy
 
         #############################################################################
-        # TODO:                                                                     #
-        #    1) Implement the backward process:                                     #
-        #        1) Compute gradients of each weight by chain rule                  #
-        #        2) Store the gradients in self.gradients                           #
+
         #############################################################################
-        # dloss_da = -1 / X.shape[0] * \
-        #            np.array([val / np.sum(val) for val in A])    # NxC
-        # p - one hot Y
-        p[range(y.shape[0]), y] -= 1
+        p[range(y.shape[0]), y] -= 1    # source https://deepnotes.io/softmax-crossentropy
         dloss_da = 1 / y.shape[0] * p                                            # NxC
         dloss_dz = np.multiply(dloss_da, _baseNetwork.ReLU_dev(self, Z))         # NxC elemwise NxC = NxC
         dloss_dw = np.matmul(dloss_dz.transpose(), X)                            # CxN * Nx784 = Cx784
