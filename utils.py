@@ -140,8 +140,8 @@ def generate_batched_data(data, label, batch_size=32, shuffle=False, seed=None):
             mini_batch = data_zipped
             data_zipped = []
         mini_batch_unzip = [[img for img, lbl in mini_batch], [lbl for img, lbl in mini_batch]]
-        batched_data.append(mini_batch_unzip[0])
-        batched_label.append(mini_batch_unzip[1])
+        batched_data.append(np.array(mini_batch_unzip[0]))
+        batched_label.append(np.array(mini_batch_unzip[1]))
 
     #############################################################################
     #                              END OF YOUR CODE                             #
