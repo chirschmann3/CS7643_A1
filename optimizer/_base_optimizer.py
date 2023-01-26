@@ -42,7 +42,7 @@ class _BaseOptimizer:
         reg_grad = model.gradients['W1'] + self.reg * model.weights['W1']
         model.gradients['W1'] = reg_grad
 
-        if 'W2' in model.gradients:
+        if 'W2' in model.gradients.keys():
             model.gradients['W2'] = model.gradients['W2'] + self.reg * model.weights['W2']
         #############################################################################
         #                              END OF YOUR CODE                             #
