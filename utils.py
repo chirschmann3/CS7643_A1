@@ -232,9 +232,7 @@ def plot_curves(train_loss_history, train_acc_history, valid_loss_history, valid
     :return: None, save two figures in the current directory
     """
     #############################################################################
-    # TODO:                                                                     #
-    #    1) Plot learning curves of training and validation loss                #
-    #    2) Plot learning curves of training and validation accuracy            #
+
     #############################################################################
     # Taken from my code utilized in CS 7641
     plt.subplot(211)
@@ -242,6 +240,7 @@ def plot_curves(train_loss_history, train_acc_history, valid_loss_history, valid
     plt.plot(train_loss_history, label='train')
     plt.plot(valid_loss_history, label='validation')
     plt.xlabel("Epochs")
+    plt.ylabel("Loss")
     plt.legend()
     # plot accuracy during training
     plt.subplot(212)
@@ -249,10 +248,12 @@ def plot_curves(train_loss_history, train_acc_history, valid_loss_history, valid
     plt.plot(train_acc_history, label='train')
     plt.plot(valid_acc_history, label='validation')
     plt.xlabel("Epochs")
+    plt.ylabel("Accuracy")
     plt.legend()
+    plt.subplots_adjust(hspace=0.6)
     plt_tit = "Loss and Accuracy for Training & Validation"
     # filename = 'images/%s.png' % plt_tit
-    plt.savefig(plt_tit)
+    plt.savefig('curves.png')
     plt.close()
     plt.clf()
     #############################################################################
