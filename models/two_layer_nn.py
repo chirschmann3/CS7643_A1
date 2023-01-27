@@ -85,7 +85,6 @@ class TwoLayerNet(_baseNetwork):
         Z2 = np.matmul(A, self.weights['W2'] + self.weights['b2'])   # NxH * HxC= NxC
         p = _baseNetwork.softmax(self, Z2)                           # NxC
         loss = _baseNetwork.cross_entropy_loss(self, p, y)           # scalar
-        # TODO: check accuracy uses p over Z2
         accuracy = _baseNetwork.compute_accuracy(self, p, y)
 
         if mode != 'train':
